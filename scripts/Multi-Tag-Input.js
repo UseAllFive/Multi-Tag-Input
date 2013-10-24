@@ -37,11 +37,10 @@
                 "easy"
             ];
 
-            if(filter_text) {
+            if (filter_text) {
                 list.push(filter_text + " and stuff");
                 title = "Search Results";
-            }
-            else {
+            } else {
                 title = "Recently Tagged";
             }
 
@@ -73,8 +72,8 @@
             // Find targets
             targets = document.getElementsByClassName("multi-tag-input");
 
-            for(i = 0, max = targets.length; i < max; i += 1) {
-                if(targets.hasOwnProperty(i)) {
+            for (i = 0, max = targets.length; i < max; i += 1) {
+                if (targets.hasOwnProperty(i)) {
                     var new_input = multi_tag_input({
                         target: targets[i],
                         load_suggested_results_callback: load_suggested_results_callback,
@@ -129,7 +128,7 @@
 
             waiting_for = callback_name;
             parameters[callback_name](text, function(title, list, filter_text) {
-                if(filter_text === text_input.value) {
+                if (filter_text === text_input.value) {
                     callback_data_received(callback_name, title, list);
                 }
             });
@@ -156,7 +155,7 @@
          * @param  {Array}  list    List of tags to display in the selectable tag list
          */
         var callback_data_received = function(request, title, list) {
-            if(request === waiting_for) {
+            if (request === waiting_for) {
                 modify_dropdown_tag_list(title, list);
             }
         };
@@ -167,11 +166,10 @@
          */
         var blur = function(event) {
             setTimeout(function() {
-                if(true === lost_focus) {
+                if (true === lost_focus) {
                     modify_dropdown_tag_list("", []);
                     waiting_for = undefined;
-                }
-                else {
+                } else {
                     text_input.focus();
                 }
 
@@ -214,16 +212,15 @@
         var key_up = function(event) {
             var input_text = text_input.value;
 
-            if(input_text_before_key_up === input_text) {
+            if (input_text_before_key_up === input_text) {
                 // Do nothing if this was a command or arrow or something
 
                 return;
-            }
-            else if(13 === event.keyCode && "" !== input_text) {
+            } else if (13 === event.keyCode && "" !== input_text) {
                 var index = get_selectable_tag_index(input_text);
                 var match_found = index > -1;
 
-                if(true === match_found) {
+                if (true === match_found) {
                     // This is in the list, just select it
 
                     select_tag_list_element(input_text);
@@ -234,8 +231,7 @@
                     create_selected_tag_element(input_text);
                     parameters.new_tag_callback(input_text);
                 }
-            }
-            else {
+            } else {
                 load_suggested_results();
             }
 
@@ -258,10 +254,10 @@
             var value;
 
             // Check for all required parameters
-            for(key in required_parameters) {
-                if(required_parameters.hasOwnProperty(key)) {
+            for (key in required_parameters) {
+                if (required_parameters.hasOwnProperty(key)) {
                     value = required_parameters[key];
-                    if("undefined" === typeof parameters[value]) {
+                    if ("undefined" === typeof parameters[value]) {
                         missing_required_parameters.push(value);
                     }
                 }
@@ -269,31 +265,31 @@
 
             // Create a hash of all the accepted parameters
             all_parameters = [].concat(required_parameters).concat(optional_parameters);
-            for(key in all_parameters) {
-                if(all_parameters.hasOwnProperty(key)) {
+            for (key in all_parameters) {
+                if (all_parameters.hasOwnProperty(key)) {
                     value = all_parameters[key];
                     accepted_parameters[value] = 1;
                 }
             }
 
             // Go through all parameters and see if they are all recognized
-            for(key in parameters) {
-                if(parameters.hasOwnProperty(key)) {
-                    if(undefined === accepted_parameters[key]) {
+            for (key in parameters) {
+                if (parameters.hasOwnProperty(key)) {
+                    if (undefined === accepted_parameters[key]) {
                         unrecognized_parameters.push(key);
                     }
                 }
             }
 
-            if(unrecognized_parameters.length > 0) {
+            if (unrecognized_parameters.length > 0) {
                 error_messages.push("    Unrecognized parameters: " + unrecognized_parameters.join(", "));
             }
 
-            if(missing_required_parameters.length > 0) {
+            if (missing_required_parameters.length > 0) {
                 error_messages.push("    Missing required parameters: " + missing_required_parameters.join(", "));
             }
 
-            if(error_messages.length > 0) {
+            if (error_messages.length > 0) {
                 console.log("Error validaging multi_tag_input inputs:\n" + error_messages.join("\n"));
             }
 
@@ -355,7 +351,7 @@
 
             remove_box.addEventListener("click", remove_tag_clicked, false);
 
-            if(undefined !== parent) {
+            if (undefined !== parent) {
                 parent.appendChild(tag);
             }
         };
@@ -432,8 +428,7 @@
                 title_element = document.createElement("div");
                 title_element.className = "select-title";
                 dropdown_tag_list_container.appendChild(title_element);
-            }
-            else {
+            } else {
                 // Clear tag list and title text
                 dom_helper.remove_children(dropdown_tag_list);
                 dom_helper.remove_children(title_element);
@@ -506,13 +501,13 @@
             var index;
             var length = list.length;
 
-            if(length === 0) {
+            if (length === 0) {
                 return;
             }
 
-            for(index = 0; index < length; index += 1) {
+            for (index = 0; index < length; index += 1) {
                 var result = callback(index, list[index]);
-                if(false === result) {
+                if (false === result) {
                     break;
                 }
             }
@@ -535,7 +530,7 @@
                 var text_value = element.childNodes[0].textContent;
 
                 // Apply optional filter
-                if("function" === typeof filter) {
+                if ("function" === typeof filter) {
                     text_value = filter(text_value);
                 }
 
@@ -574,7 +569,7 @@
             return index > -1;
         },
         remove_children: function(element) {
-            if(!element || !element.childNodes) {
+            if (!element || !element.childNodes) {
                 return;
             }
 
