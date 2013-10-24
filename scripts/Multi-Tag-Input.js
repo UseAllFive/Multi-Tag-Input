@@ -110,9 +110,9 @@
         // to the lost focus.
         var lost_focus = true;
 
-        var selectable_tag_list;
+        var dropdown_tag_list;
         var selected_tag_container;
-        var selectable_tag_list_container;
+        var dropdown_tag_list_container;
         var target;
         var text_input;
         var title_element;
@@ -147,7 +147,7 @@
 
         /**
          * Callback data was received from a list request. Make sure we are still waiting
-         * for this callback before invoking the modify_selectable_tag_list function.
+         * for this callback before invoking the modify_dropdown_tag_list function.
          *
          * @param  {String} request The request that was made that resulted in this callback. Used
          *                          to make sure we only handle the callback if we're still waiting
@@ -157,7 +157,7 @@
          */
         var callback_data_received = function(request, title, list) {
             if(request === waiting_for) {
-                modify_selectable_tag_list(title, list);
+                modify_dropdown_tag_list(title, list);
             }
         };
 
@@ -168,7 +168,7 @@
         var blur = function(event) {
             setTimeout(function() {
                 if(true === lost_focus) {
-                    modify_selectable_tag_list("", []);
+                    modify_dropdown_tag_list("", []);
                     waiting_for = undefined;
                 }
                 else {
@@ -187,7 +187,7 @@
          * @return {Integer} Index of the tag. -1 if none is found
          */
         var get_selectable_tag_index = function(text) {
-            var tags = js_helper.unordered_list_to_array(selectable_tag_list);
+            var tags = js_helper.unordered_list_to_array(dropdown_tag_list);
             var lowercase_tags = tags.slice(0);
             js_helper.each(lowercase_tags, function(index, value) {
                 lowercase_tags[index] = value.toLowerCase();
@@ -317,7 +317,7 @@
             target.removeEventListener("click", remove_tag_clicked);
 
             // Move up the DOM until we find the tag element
-            while(dom_helper.has_class(target, "tag") === false) {
+            while(dom_helper.has_class(target, "existing-tag") === false) {
                 target = parent;
                 parent = target.parentNode;
             }
@@ -345,7 +345,7 @@
             var remove_box;
 
             tag = document.createElement("div");
-            tag.className = "tag";
+            tag.className = "existing-tag";
             tag.appendChild(document.createTextNode(text));
             tag.setAttribute("tag-value", text);
 
@@ -364,7 +364,7 @@
          * Callback when an item in the selectable tag list was clicked
          * @param  {Event} event Event for the click
          */
-        var selectable_tag_list_element_clicked = function(event) {
+        var dropdown_tag_list_element_clicked = function(event) {
             var target = event.currentTarget;
             var text = target.childNodes[0].textContent;
 
@@ -380,12 +380,12 @@
          * @param  {String} text Text of tag to select
          */
         var select_tag_list_element = function(text) {
-            var elements = js_helper.unordered_list_to_array(selectable_tag_list);
+            var elements = js_helper.unordered_list_to_array(dropdown_tag_list);
 
             var index = get_selectable_tag_index(text);
 
             // Remove this tag from the selectable tag list
-            selectable_tag_list.removeChild(selectable_tag_list.childNodes[index]);
+            dropdown_tag_list.removeChild(dropdown_tag_list.childNodes[index]);
 
             // Add this to the tag list
             create_selected_tag_element(text, selected_tag_container);
@@ -404,9 +404,9 @@
          * Hide the list of tags if it is empty
          */
         var hide_tag_select_if_empty = function() {
-            var list = selectable_tag_list_container.getElementsByTagName("ul")[0];
+            var list = dropdown_tag_list_container.getElementsByTagName("ul")[0];
 
-            selectable_tag_list_container.style.display = 0 === list.childNodes.length ? "none" : "block";
+            dropdown_tag_list_container.style.display = 0 === list.childNodes.length ? "none" : "block";
         };
         /**
          * Modify the selectable tag list, aka the list of tags returned from the
@@ -416,26 +416,26 @@
          * @param  {String} title   Title to display. "Suggested Results" for example
          * @param  {Array}  options List of options to display
          */
-        var modify_selectable_tag_list = function(title, options) {
+        var modify_dropdown_tag_list = function(title, options) {
             var key;
             var option;
             var tag_list_element;
 
-            if (undefined === selectable_tag_list_container) {
-                selectable_tag_list_container = document.createElement("div");
-                selectable_tag_list_container.className = "selectable-tag-list-container";
-                target.appendChild(selectable_tag_list_container);
+            if (undefined === dropdown_tag_list_container) {
+                dropdown_tag_list_container = document.createElement("div");
+                dropdown_tag_list_container.className = "dropdown-tag-list-container";
+                target.appendChild(dropdown_tag_list_container);
 
-                selectable_tag_list = document.createElement("ul");
-                selectable_tag_list_container.appendChild(selectable_tag_list);
+                dropdown_tag_list = document.createElement("ul");
+                dropdown_tag_list_container.appendChild(dropdown_tag_list);
 
                 title_element = document.createElement("div");
                 title_element.className = "select-title";
-                selectable_tag_list_container.appendChild(title_element);
+                dropdown_tag_list_container.appendChild(title_element);
             }
             else {
                 // Clear tag list and title text
-                dom_helper.remove_children(selectable_tag_list);
+                dom_helper.remove_children(dropdown_tag_list);
                 dom_helper.remove_children(title_element);
             }
 
@@ -445,8 +445,8 @@
                     option = options[key];
                     tag_list_element = document.createElement("li");
                     tag_list_element.appendChild(document.createTextNode(option));
-                    tag_list_element.addEventListener("click", selectable_tag_list_element_clicked, false);
-                    selectable_tag_list.appendChild(tag_list_element);
+                    tag_list_element.addEventListener("click", dropdown_tag_list_element_clicked, false);
+                    dropdown_tag_list.appendChild(tag_list_element);
                 }
             }
 
@@ -481,7 +481,7 @@
             create_selected_tag_element("Tag 2 With A Long Name", selected_tag_container);
             create_selected_tag_element("Tag 3 With A Name", selected_tag_container);
 
-            modify_selectable_tag_list("title", []);
+            modify_dropdown_tag_list("title", []);
 
             target.addEventListener("focus", focus, true);
             target.addEventListener("blur", blur, true);
