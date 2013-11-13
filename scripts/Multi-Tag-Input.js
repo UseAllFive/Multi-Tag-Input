@@ -347,6 +347,7 @@
 
             remove_box = document.createElement("div");
             remove_box.className = "remove-tag-button";
+            remove_box.appendChild(document.createTextNode(String.fromCharCode(215)));
             tag.appendChild(remove_box);
 
             remove_box.addEventListener("click", remove_tag_clicked, false);
