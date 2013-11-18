@@ -488,8 +488,6 @@
             target.addEventListener("focus", focus, true);
             target.addEventListener("blur", blur, true);
             target.addEventListener("keyup", js_helper.debounce(key_up, 250), false);
-
-            text_input.focus();
         };
 
         var clear_tags = function() {
