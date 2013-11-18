@@ -9,7 +9,7 @@
   -webkit-font-smoothing: antialiased;
   min-height: 20px;
   position: relative;
-  width: 415px;
+  width: 341px;
 }
 
 /* Unselectable text */
@@ -154,6 +154,7 @@
   font-size: 14px;
   padding: 5px 10px;
   width: 100%;
+  background-color: #ddd;
 }
 
 /* Selected tag */

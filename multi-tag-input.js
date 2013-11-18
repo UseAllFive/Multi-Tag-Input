@@ -81,15 +81,13 @@
                         remove_tag_callback: remove_tag_callback,
                         select_tag_callback: select_tag_callback
                     });
+
+                    new_input.set_tags(["tag 1", "tag 2"]);
                 }
             }
         };
         document.addEventListener(event_name, listener, false);
     })();
-
-    var tag = function() {
-
-    };
 
     /**
      * Take a div and make it a Multi Tag Input
@@ -486,9 +484,25 @@
             text_input.focus();
         };
 
+        var clear_tags = function() {
+            while(selected_tag_container.childNodes.length > 0) {
+                selected_tag_container.removeChild(selected_tag_container.childNodes[0]);
+            }
+        };
+
+        var set_tags = function(tags) {
+            clear_tags();
+
+            js_helper.each(tags, function() {
+                create_selected_tag_element(this, selected_tag_container);
+            });
+        };
+
         init();
 
-        return {};
+        return {set_tags: set_tags,
+            clear_tags: clear_tags
+        };
     };
 
     var js_helper = {
@@ -507,7 +521,7 @@
             }
 
             for (index = 0; index < length; index += 1) {
-                var result = callback(index, list[index]);
+                var result = callback.apply(list[index], [index, list[index]]);
                 if (false === result) {
                     break;
                 }
