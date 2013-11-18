@@ -194,6 +194,14 @@
             return index;
         };
 
+
+        /**
+         */
+        var list = function() {
+            var tags = js_helper.unordered_list_to_array(dropdown_tag_list);
+            return tags;
+        };
+
         /**
          * Event handler for input box keyup.
          *
@@ -501,7 +509,8 @@
         init();
 
         return {set_tags: set_tags,
-            clear_tags: clear_tags
+            clear_tags: clear_tags,
+            list: list
         };
     };
 
