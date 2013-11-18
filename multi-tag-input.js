@@ -234,9 +234,11 @@
                 else {
                     // This tag is not in the list, create it and call the new_tag_callback
 
-                    create_selected_tag_element(input_text);
+                    create_selected_tag_element(input_text, selected_tag_container);
                     parameters.new_tag_callback(input_text);
                 }
+
+                input_text.value = "";
             } else {
                 load_suggested_results();
             }
