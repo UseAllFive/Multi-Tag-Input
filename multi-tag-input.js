@@ -198,7 +198,7 @@
         /**
          */
         var list = function() {
-            var tags = js_helper.unordered_list_to_array(dropdown_tag_list);
+            var tags = js_helper.unordered_list_to_array(selected_tag_container);
             return tags;
         };
 
