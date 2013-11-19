@@ -218,13 +218,11 @@
         var key_up = function(event) {
             var input_text = text_input.value;
 
-            if (input_text_before_key_up === input_text) {
-                // Do nothing if this was a command or arrow or something
-
-                return;
-            } else if (13 === event.keyCode && "" !== input_text) {
+            if (13 === event.keyCode && "" !== input_text) {
                 var index = get_selectable_tag_index(input_text);
                 var match_found = index > -1;
+
+                text_input.value = "";
 
                 if (true === match_found) {
                     // This is in the list, just select it
@@ -237,8 +235,10 @@
                     create_selected_tag_element(input_text, selected_tag_container);
                     parameters.new_tag_callback(input_text);
                 }
+            } else if (input_text_before_key_up === input_text) {
+                // Do nothing if this was a command or arrow or something
 
-                input_text.value = "";
+                return;
             } else {
                 load_suggested_results();
             }
@@ -489,7 +489,13 @@
 
             target.addEventListener("focus", focus, true);
             target.addEventListener("blur", blur, true);
-            target.addEventListener("keyup", js_helper.debounce(key_up, 250), false);
+            target.addEventListener("keyup", js_helper.debounce(key_up, 250, function(event) {
+                // The filtering debouncer passes back the event to this filter function
+                // on every firing. Returning true here will override the debouncer
+                // and execute the callback immediatly. Returning false will bring
+                // the standard debouncing method.
+                return 13 === event.keyCode;
+            }), false);
         };
 
         var clear_tags = function() {
@@ -563,20 +569,49 @@
 
             return list;
         },
+
         /**
-         * Standard debouncer
+         * This debouncer has an optional filter_callback parameter. The arguments
+         * passed to this function will be sent back to the filter_callback, if it exists.
+         * If the function returns false, then the regular debouncing will occur. If the
+         * function returns true, then the debouncer will be bypassed and the callback
+         * will be executed immediatly.
+         *
+         * @param  {Function} fn              Callback to execute when debounce time
+         *                                    has lapsed since the last invocation.
+         * @param  {Number}   delay           Milliseconds to wait to execute callback
+         *                                    after last invocation.
+         * @param  {Function} filter_callback Filter function. This function is called
+         *                                    with the same arguments received. If the function
+         *                                    does not exist or returns false, the regular
+         *                                    debouncing functionality is obeyed. If the function
+         *                                    does exist and it returns true, then the debouncer
+         *                                    will be bypassed and the callback will be executed
+         *                                    immediatly.
+         * @return {none}
          */
-        debounce: function(fn, delay) {
+        debounce: function(fn, delay, filter_callback) {
             var timer = null;
+
             return function () {
                 var args = arguments;
                 var context = this;
+                var bypass_debouncer = false;
 
                 clearTimeout(timer);
 
-                timer = setTimeout(function () {
+                if("function" === typeof filter_callback) {
+                    bypass_debouncer = filter_callback.apply(context, args);
+                }
+
+                if(true === bypass_debouncer) {
                     fn.apply(context, args);
-                }, delay);
+                }
+                else {
+                    timer = setTimeout(function () {
+                        fn.apply(context, args);
+                    }, delay);
+                }
             };
         }
     };
