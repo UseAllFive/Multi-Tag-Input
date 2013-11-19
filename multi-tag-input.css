@@ -44,6 +44,9 @@
 
 /* Selected tags */
 .multi-tag-input .selected-tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   position: relative;
   width: 100%;
 }

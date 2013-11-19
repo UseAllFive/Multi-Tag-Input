@@ -348,7 +348,7 @@
             var tag;
             var remove_box;
 
-            tag = document.createElement("div");
+            tag = document.createElement("li");
             tag.className = "existing-tag";
             tag.appendChild(document.createTextNode(text));
             tag.setAttribute("tag-value", text);
@@ -477,7 +477,7 @@
             content_box.appendChild(text_input);
 
             // Create tag container
-            selected_tag_container = document.createElement("div");
+            selected_tag_container = document.createElement("ul");
             selected_tag_container.className = "selected-tags";
             content_box.insertBefore(selected_tag_container, content_box.childNodes[0]);
 
