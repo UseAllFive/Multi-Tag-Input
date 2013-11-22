@@ -485,10 +485,6 @@
             selected_tag_container.className = "selected-tags";
             content_box.insertBefore(selected_tag_container, content_box.childNodes[0]);
 
-            create_selected_tag_element("Tag 1", selected_tag_container);
-            create_selected_tag_element("Tag 2 With A Long Name", selected_tag_container);
-            create_selected_tag_element("Tag 3 With A Name", selected_tag_container);
-
             modify_dropdown_tag_list("title", []);
 
             target.addEventListener("focus", focus, true);
