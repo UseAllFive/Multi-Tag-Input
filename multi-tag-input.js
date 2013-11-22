@@ -224,6 +224,10 @@
 
                 text_input.value = "";
 
+                // When pressing enter, clear the list and get recents
+                modify_dropdown_tag_list("", []);
+                load_suggested_results();
+
                 if (true === match_found) {
                     // This is in the list, just select it
 
