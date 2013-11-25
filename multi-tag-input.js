@@ -127,7 +127,7 @@
             waiting_for = callback_name;
             parameters[callback_name](text, function(title, list, filter_text) {
                 if (filter_text === text_input.value) {
-                    callback_data_received(callback_name, title, list);
+                    callback_data_received(callback_name, title, list, filter_text);
                 }
             });
             // }
@@ -152,9 +152,9 @@
          * @param  {String} title   Title to display in the selectable tag list
          * @param  {Array}  list    List of tags to display in the selectable tag list
          */
-        var callback_data_received = function(request, title, list) {
+        var callback_data_received = function(request, title, list, filter_text) {
             if (request === waiting_for) {
-                modify_dropdown_tag_list(title, list);
+                modify_dropdown_tag_list(title, list, filter_text);
             }
         };
 
@@ -375,7 +375,7 @@
          */
         var dropdown_tag_list_element_clicked = function(event) {
             var target = event.currentTarget;
-            var text = target.childNodes[0].textContent;
+            var text = target.getAttribute("value") ? target.getAttribute("value") : target.childNodes[0].textContent;
 
             select_tag_list_element(text);
         };
@@ -422,13 +422,17 @@
          * server. This will create the tag list if it doesnt exist, update it if
          * it does, and hide if it's empty.
          *
-         * @param  {String} title   Title to display. "Suggested Results" for example
-         * @param  {Array}  options List of options to display
+         * @param  {String} title        Title to display. "Suggested Results" for example
+         * @param  {Array}  options      List of options to display
+         * @param  {String} accent_text  [Optional] If accent_text is passed, text matching
+         *                               accent_text will be bold. If none is passed, then
+         *                               the whole text will be bolded
          */
-        var modify_dropdown_tag_list = function(title, options) {
+        var modify_dropdown_tag_list = function(title, options, accent_text) {
             var key;
             var option;
             var tag_list_element;
+            var text;
 
             if (undefined === dropdown_tag_list_container) {
                 dropdown_tag_list_container = document.createElement("div");
@@ -451,9 +455,21 @@
             for (key in options) {
                 if (options.hasOwnProperty(key)) {
                     option = options[key];
+                    text = option;
+
+                    // If there is a filter, bold only the matching portion. If there is no filter,
+                    // then bold the whole thing.
+                    if(accent_text) {
+                        text = text.replace(accent_text, "<strong>" + accent_text + "</strong>");
+                    }
+                    else {
+                        text = "<strong>" + text + "</strong>";
+                    }
+
                     tag_list_element = document.createElement("li");
-                    tag_list_element.appendChild(document.createTextNode(option));
+                    tag_list_element.innerHTML = text;
                     tag_list_element.addEventListener("click", dropdown_tag_list_element_clicked, false);
+                    tag_list_element.setAttribute("value", option);
                     dropdown_tag_list.appendChild(tag_list_element);
                 }
             }
@@ -557,7 +573,7 @@
 
             js_helper.each(indicies, function(index, element) {
                 var childNodes = element.childNodes;
-                var text_value = element.childNodes[0].textContent;
+                var text_value = element.getAttribute("value") ? element.getAttribute("value") : element.childNodes[0].textContent;
 
                 // Apply optional filter
                 if ("function" === typeof filter) {
