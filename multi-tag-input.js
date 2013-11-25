@@ -528,11 +528,17 @@
             });
         };
 
+        var reset = function() {
+            text_input.value = "";
+            modify_dropdown_tag_list("", []);
+        };
+
         init();
 
         return {set_tags: set_tags,
             clear_tags: clear_tags,
-            list: list
+            list: list,
+            reset: reset
         };
     };
 
