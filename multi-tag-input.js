@@ -512,6 +512,15 @@
             title_element.appendChild(document.createTextNode(title));
         };
 
+        var content_box_clicked = function(event) {
+            var target = event.target;
+
+            if(target === content_box || target === selected_tag_container) {
+                text_input.focus();
+                lost_focus = false;
+            }
+        };
+
         var init = function() {
             // Validate input
             validate_parameters();
@@ -521,6 +530,7 @@
 
             content_box = document.createElement("div");
             content_box.className = "content-box";
+            content_box.addEventListener("click", content_box_clicked);
             target.appendChild(content_box);
 
             // Find the children
