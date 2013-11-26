@@ -165,6 +165,11 @@
         var blur = function(event) {
             setTimeout(function() {
                 if (true === lost_focus) {
+                    // The box lost the focus. If the tag has anything in it, treat this
+                    // as an attempt to make a new tag.
+
+                    create_tag_from_text_input();
+
                     modify_dropdown_tag_list("", []);
                     waiting_for = undefined;
                 } else {
@@ -203,6 +208,47 @@
         };
 
         /**
+         * Take whatever is in the text box and attempt to create a new tag.
+         * The tag can be from the drop down list, or it might not be. If it
+         * is in the drop down list, trigger a drop down list click. That will
+         * remove the item from the dropdown list while adding the tag. If it
+         * is not in the drop down list, creat a new tag.
+         */
+        var create_tag_from_text_input = function() {
+            var index;
+            var input_text;
+            var match_found;
+
+            // Read the text in the box
+            input_text = text_input.value;
+
+            // Do nothing if the input text is empty
+            if("" === input_text) {
+                return;
+            }
+
+            // Find if this text is in the drop down list
+            index = get_selectable_tag_index(input_text);
+            match_found = index > -1;
+
+            // Clear the text box
+            text_input.value = "";
+
+            // Find the tag in the drop down list, or create a new one
+            if (true === match_found) {
+                // This is in the list, select it
+
+                select_tag_list_element(input_text);
+            }
+            else {
+                // This tag is not in the list, create it and call the new_tag_callback
+
+                create_selected_tag_element(input_text, selected_tag_container);
+                parameters.new_tag_callback(input_text);
+            }
+        };
+
+        /**
          * Event handler for input box keyup.
          *
          * If the event.keyCode is = 13 (return), and the input
@@ -219,26 +265,11 @@
             var input_text = text_input.value;
 
             if (13 === event.keyCode && "" !== input_text) {
-                var index = get_selectable_tag_index(input_text);
-                var match_found = index > -1;
-
-                text_input.value = "";
+                create_tag_from_text_input();
 
                 // When pressing enter, clear the list and get recents
                 modify_dropdown_tag_list("", []);
                 load_suggested_results();
-
-                if (true === match_found) {
-                    // This is in the list, just select it
-
-                    select_tag_list_element(input_text);
-                }
-                else {
-                    // This tag is not in the list, create it and call the new_tag_callback
-
-                    create_selected_tag_element(input_text, selected_tag_container);
-                    parameters.new_tag_callback(input_text);
-                }
             } else if (input_text_before_key_up === input_text) {
                 // Do nothing if this was a command or arrow or something
 
