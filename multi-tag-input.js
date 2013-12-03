@@ -379,11 +379,9 @@
          */
         var clear_selected_tags = function() {
             var element;
-            var elements = document.getElementsByClassName("existing-tag");
-            var i;
 
-            for (i = 0; i < elements.length; i += 1) {
-                element = elements[i];
+            while(document.getElementsByClassName("existing-tag").length > 0) {
+                element = document.getElementsByClassName("existing-tag")[0];
                 element.parentNode.removeChild(element);
             }
         };
