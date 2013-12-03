@@ -375,6 +375,20 @@
         };
 
         /**
+         * Clear the selected tags list
+         */
+        var clear_selected_tags = function() {
+            var element;
+            var elements = document.getElementsByClassName("existing-tag");
+            var i;
+
+            for (i = 0; i < elements.length; i += 1) {
+                element = elements[i];
+                element.parentNode.removeChild(element);
+            }
+        };
+
+        /**
          * Create a new tag in the selected tag list
          * @param  {String} text   Text for the tag
          * @param  {DOM}    parent Where to add the tag
@@ -572,6 +586,7 @@
         var reset = function() {
             text_input.value = "";
             modify_dropdown_tag_list("", []);
+            clear_selected_tags();
         };
 
         init();
