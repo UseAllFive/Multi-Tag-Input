@@ -223,7 +223,7 @@
             input_text = text_input.value;
 
             // Do nothing if the input text is empty
-            if("" === input_text) {
+            if ("" === input_text) {
                 return;
             }
 
@@ -356,7 +356,7 @@
             target.removeEventListener("click", remove_tag_clicked);
 
             // Move up the DOM until we find the tag element
-            while(dom_helper.has_class(target, "existing-tag") === false) {
+            while (dom_helper.has_class(target, "existing-tag") === false) {
                 target = parent;
                 parent = target.parentNode;
             }
@@ -504,7 +504,7 @@
 
                     // If there is a filter, bold only the matching portion. If there is no filter,
                     // then bold the whole thing.
-                    if(accent_text) {
+                    if (accent_text) {
                         text = text.replace(accent_text, "<strong>" + accent_text + "</strong>");
                     }
                     else {
@@ -529,7 +529,7 @@
         var content_box_clicked = function(event) {
             var target = event.target;
 
-            if(target === content_box || target === selected_tag_container) {
+            if (target === content_box || target === selected_tag_container) {
                 text_input.focus();
                 lost_focus = false;
             }
@@ -671,11 +671,11 @@
 
                 clearTimeout(timer);
 
-                if("function" === typeof filter_callback) {
+                if ("function" === typeof filter_callback) {
                     bypass_debouncer = filter_callback.apply(context, args);
                 }
 
-                if(true === bypass_debouncer) {
+                if (true === bypass_debouncer) {
                     fn.apply(context, args);
                 }
                 else {
@@ -703,7 +703,7 @@
                 return;
             }
 
-            while(element.childNodes.length > 0) {
+            while (element.childNodes.length > 0) {
                 element.removeChild(element.childNodes[0]);
             }
         }
