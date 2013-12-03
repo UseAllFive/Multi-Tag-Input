@@ -567,6 +567,12 @@
             }), false);
         };
 
+        var clear_tags = function() {
+            while(selected_tag_container.childNodes.length > 0) {
+                selected_tag_container.removeChild(selected_tag_container.childNodes[0]);
+            }
+        };
+
         var set_tags = function(tags) {
             clear_tags();
 
@@ -584,6 +590,7 @@
         init();
 
         return {set_tags: set_tags,
+            clear_tags: clear_tags,
             list: list,
             reset: reset
         };
