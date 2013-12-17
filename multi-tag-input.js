@@ -14,82 +14,6 @@
     //-- Include modules here.
 
     /**
-     * This is a simulator. This simulates the class being called and returning
-     * data it needs
-     *
-     * @return {[type]} [description]
-     */
-    // (function() {
-    //     var event_name = "DOMContentLoaded";
-
-    //     var current_request;
-
-    //     /**
-    //      * Simulate receiving a request for suggested results
-    //      * @param  {Function} callback Callback function to call when results are received
-    //      */
-    //     var load_suggested_results_callback = function(filter_text, callback) {
-    //         console.log("load_suggested_results_callback");
-    //         var title;
-    //         var list = [
-    //             "50 Great Fall Work Pieces--All Under $100",
-    //             "Real Style: Everyday Animal Print",
-    //             "easy"
-    //         ];
-
-    //         if (filter_text) {
-    //             list.push(filter_text + " and stuff");
-    //             title = "Search Results";
-    //         } else {
-    //             title = "Recently Tagged";
-    //         }
-
-    //         // setTimeout(function(title, list, filter_text) {
-    //         callback(title, list, filter_text);
-    //         // }, Math.random() * 1800 + 200, title, list, filter_text);
-    //     };
-
-    //     var select_tag_callback = function(text) {
-    //         console.log("select_tag_callback, name=", text);
-    //     };
-
-    //     var new_tag_callback = function(text) {
-    //         console.log("new_tag_callback, text=", text);
-    //     };
-
-    //     var remove_tag_callback = function(text) {
-    //         console.log("remove_tag_callback, text=", text);
-    //     };
-
-    //     var listener = function(event, callback) {
-    //         var targets;
-    //         var i;
-    //         var max;
-
-    //         // Remove event listener
-    //         document.removeEventListener(event_name, listener);
-
-    //         // Find targets
-    //         targets = document.getElementsByClassName("multi-tag-input");
-
-    //         for (i = 0, max = targets.length; i < max; i += 1) {
-    //             if (targets.hasOwnProperty(i)) {
-    //                 var new_input = multi_tag_input({
-    //                     target: targets[i],
-    //                     load_suggested_results_callback: load_suggested_results_callback,
-    //                     new_tag_callback: new_tag_callback,
-    //                     remove_tag_callback: remove_tag_callback,
-    //                     select_tag_callback: select_tag_callback
-    //                 });
-
-    //                 new_input.set_tags(["tag 1", "tag 2"]);
-    //             }
-    //         }
-    //     };
-    //     document.addEventListener(event_name, listener, false);
-    // })();
-
-    /**
      * Take a div and make it a Multi Tag Input
      * @param  {[type]} parameters [description]
      * @return {[type]}            [description]
@@ -130,7 +54,6 @@
                     callback_data_received(callback_name, title, list, filter_text);
                 }
             });
-            // }
         };
 
         /**
