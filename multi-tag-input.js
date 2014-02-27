@@ -362,6 +362,9 @@
             // Remove this tag from the selectable tag list
             dropdown_tag_list.removeChild(dropdown_tag_list.childNodes[index]);
 
+            // Clear the input
+            text_input.value = "";
+
             // Add this to the tag list
             create_selected_tag_element(text, selected_tag_container);
 
